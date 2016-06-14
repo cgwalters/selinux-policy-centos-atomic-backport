@@ -19,7 +19,7 @@
 Summary: SELinux policy configuration
 Name: selinux-policy
 Version: 3.13.1
-Release: 60%{?dist}.3
+Release: 61.atomic.0%{?dist}
 License: GPLv2+
 Group: System Environment/Base
 Source: serefpolicy-%{version}.tgz
@@ -30,6 +30,8 @@ patch3: policy-rhel-7.2-base.patch
 patch4: policy-rhel-7.2-contrib.patch
 patch5: policy-rhel-7.2.z-base.patch
 patch6: policy-rhel-7.2.z-contrib.patch
+Patch7: 0001-Allow-rpm-ostree-domain-transition-to-install_t-doma.patch
+Patch8: 0001-Label-usr-libexec-rpm-ostreed-as-rpm_exec_t.-BZ-1309.patch
 Source1: modules-targeted-base.conf 
 Source31: modules-targeted-contrib.conf
 Source2: booleans-targeted.conf
@@ -336,11 +338,13 @@ Based off of reference policy: Checked out revision  2.20091117
 %setup -n serefpolicy-contrib-%{version} -q -b 29
 %patch4 -p1
 %patch6 -p1
+%patch8 -p1
 contrib_path=`pwd`
 %setup -n serefpolicy-%{version} -q
 %patch3 -p1
 %patch2 -p1
 %patch5 -p1
+%patch7 -p1
 refpolicy_path=`pwd`
 cp $contrib_path/* $refpolicy_path/policy/modules/contrib
 rm -rf $refpolicy_path/policy/modules/contrib/kubernetes.*
